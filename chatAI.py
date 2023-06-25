@@ -10,7 +10,7 @@ cookies = sign.login()
 sign.saveCookies()
 
 # Create a ChatBot
-chatbot = hugchat.ChatBot(cookies=cookies.get_dict())  # or cookie_path="usercookies/<email>.json"
+chatbot = hugchat.ChatBot(cookies=config.HC_COOKIE)  # or cookie_path="usercookies/<email>.json"
 
 def outfitReccomendation(events, clothing_list, weather, gender):
     message = """

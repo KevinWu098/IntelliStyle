@@ -14,7 +14,6 @@ def getOutfit(dummy_btn_argument, gender):
     if isinstance(event_summaries, list):
         event_summaries = ", ".join(event_summaries)
     
-    clothing_list = ",".join(clothing_list)
     weather_details = weather.getWeather()
 
     generated_outfit = chatAI.outfitReccomendation(event_summaries, ", ".join(clothing_list), weather_details, gender)
@@ -106,7 +105,7 @@ with gr.Blocks() as demo:
                     <h4 style="text-align:center"> <i><u> Please do not spam the button as errors will arise. </br> Additionally, errors may occasionally occur even when all user input is correct. If you believe this to be the case, please refresh the page and try using the demo again. </u></i> </h4>
                     """
                 )
-                
+
         with gr.Row():
             gr.Markdown("""<h1><center>Demo Example ↓</center><h1>""")
         
