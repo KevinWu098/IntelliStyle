@@ -40,7 +40,6 @@ def getCalendarEvents():
     if not events:
         return "No Events Today"
     else:
-        print('Events for', date.date())
         for event in events:
             event_summaries.append(event['summary'])
         return event_summaries

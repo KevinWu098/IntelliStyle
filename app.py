@@ -9,12 +9,12 @@ headers = {"Authorization": f"Bearer {API_KEY}"}
 
 clothing_list = [] # Utilized in chatAI.py for more personalized suggestions
 
-def getOutfit(dummy_argument):
+def getOutfit(dummy_btn_argument, gender):
     event_summaries = gCalendar.getCalendarEvents()
     if isinstance(event_summaries, list):
         event_summaries = ", ".join(event_summaries)
 
-    generated_outfit = chatAI.CustomChatGPT(event_summaries, clothing_list)
+    generated_outfit = chatAI.CustomChatGPT(event_summaries, clothing_list, gender)
 
     return (
         "Your Event(s): \n"
@@ -34,10 +34,9 @@ def classifyClothing(filepath):
         return response.json()
 
     output = query(filepath)
-    print(output)
+
     if output:
         clothing_list.append(f"[{output[0]['label']}]")
-        print(clothing_list)
         return [output[0]["label"], ", ".join(clothing_list)]
     else:
         return ["Nothing detected", ", ".join(clothing_list)]
@@ -58,10 +57,13 @@ with gr.Blocks() as demo:
 
         with gr.Row():
             outputs=gr.Textbox(lines=5, label="Generated Outfit")
-        
+            
+        with gr.Row():
+            gender_selector = gr.Radio(["Male", "Female", "Non-binary"], label="Gender Identity", info="If gender identity is not provided, results may be less fine-tuned.")
+
         with gr.Row():
             btn = gr.Button("Connect to Google Calendar and Run")
-            btn.click(fn=getOutfit, inputs=btn, outputs=outputs)
+            btn.click(fn=getOutfit, inputs=[btn, gender_selector], outputs=outputs)
 
         with gr.Row():
             gr.Markdown(
