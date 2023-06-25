@@ -11,7 +11,6 @@ headers = {"Authorization": f"Bearer {API_KEY}"}
 # event_summaries = ["Dinner Date"]
 # event_summaries = ', '.join(event_summaries)
 
-
 clothing_list = []
 
 def getOutfit(dummy_argument):
@@ -19,7 +18,7 @@ def getOutfit(dummy_argument):
     if isinstance(event_summaries, list):
         event_summaries = ", ".join(event_summaries)
 
-    generated_outfit = chatAI.CustomChatGPT(event_summaries)
+    generated_outfit = chatAI.CustomChatGPT(event_summaries, clothing_list)
 
     return (
         "Your Event(s): \n"
