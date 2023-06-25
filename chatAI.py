@@ -14,10 +14,10 @@ import weather
 
 messages[0]["content"] += f"The current weather is: {weather.getWeather()}. Adjust THE ONE SINGULAR OUTFIT accordingly."
 
-def CustomChatGPT(user_input, clothing_list, gender):
+def CustomChatGPT(events, clothing_list, gender):
     messages[0]["content"] += f"The USER' is {gender}. Update suggested outfits accordingly"
     messages[0]["content"] += f"The USER'S WARDROBE CONSISTS OF THESE ITEMS: {clothing_list}. When possible, prefer to utilize these items, but do so appropriately."
-    messages.append({"role": "user", "content": user_input})
+    messages.append({"role": "user", "content": events})
     response = openai.ChatCompletion.create(
         model = "gpt-3.5-turbo",    
         messages = messages
