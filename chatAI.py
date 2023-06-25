@@ -5,7 +5,7 @@ palm.configure(api_key=config.BARD_API_KEY)
 
 defaults = {
   'model': 'models/text-bison-001',
-  'temperature': 0.7,
+  'temperature': 0.8,
   'candidate_count': 1,
   'top_k': 40,
   'top_p': 0.95,
@@ -26,6 +26,7 @@ def outfitRecommendation(events, clothing_list, weather, gender):
     message += f"The current weather is: {weather}. Adjust THE ONE SINGULAR OUTFIT accordingly."
     message += f"The USER is {gender}. Update suggested outfits accordingly"
     message += f"The USER'S WARDROBE CONSISTS OF THESE ITEMS: {clothing_list}. When possible, prefer to utilize these items, but do so appropriately."    
+    message += "Your responses should be short and concise and only contain one outfit."
 
     response = palm.generate_text(
         **defaults,

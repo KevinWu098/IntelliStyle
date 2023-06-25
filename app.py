@@ -1,6 +1,6 @@
 import gCalendar, chatAI, weather
 import gradio as gr
-import requests
+import requests 
 import config
 
 API_KEY = config.HF_API_KEY
@@ -9,18 +9,18 @@ headers = {"Authorization": f"Bearer {API_KEY}"}
 
 clothing_list = [] # Utilized in chatAI.py for more personalized suggestions
 
-def getOutfit(dummy_btn_argument, gender):
-    event_summaries = gCalendar.getCalendarEvents()
-    if isinstance(event_summaries, list):
-        event_summaries = ", ".join(event_summaries)
+def getOutfit(events, gender):
+    # event_summaries = gCalendar.getCalendarEvents()
+    # if isinstance(event_summaries, list):
+    #     event_summaries = ", ".join(event_summaries)
     
     weather_details = weather.getWeather()
 
-    generated_outfit = chatAI.outfitRecommendation(event_summaries, ", ".join(clothing_list), weather_details, gender)
+    generated_outfit = chatAI.outfitRecommendation(events, ", ".join(clothing_list), weather_details, gender)
 
     return (
         "Your Event(s): \n"
-        f'{event_summaries} \n'
+        f'{events} \n'
 
         "\n"
 
@@ -37,20 +37,20 @@ def classifyClothing(filepath):
 
     output = query(filepath)
 
-    if output:
+    if output[0]['label']:
         clothing_list.append(f"[{output[0]['label']}]")
         return [output[0]["label"], ", ".join(clothing_list)]
     else:
         return ["Nothing detected", ", ".join(clothing_list)]
 
 with gr.Blocks() as demo:
-    with gr.Tab("Get Outfit(s) Based on Your Schedule"):
+    with gr.Tab("Get Outfit(s) Based on Today's Events"):
         with gr.Row():
             gr.Markdown(
                 """
                 <h1> <center> IntelliStyle </center> </h1>
                 <h3> <center> 
-                IntelliStyle is integrated with your Google Calendar, allowing it to suggest optimized outfits for your upcoming day. 
+                IntelliStyle takes in today's events, allowing it to suggest optimized outfits for your upcoming day. 
                 </br>
                 It also takes into account weather conditions, making sure you're looking your best — rain or shine. 
                 </center> </h3>
@@ -58,23 +58,27 @@ with gr.Blocks() as demo:
             )
 
         with gr.Row():
-            outputs=gr.Textbox(lines=5, label="Generated Outfit")
-            
+            events_textbox = gr.Textbox(lines = 2, label="Type in Today's Events")
+
         with gr.Row():
             gender_selector = gr.Radio(["Male", "Female", "Non-binary"], label="Gender Identity", info="If gender identity is not provided, results may be less fine-tuned.")
 
         with gr.Row():
-            btn = gr.Button("Connect to Google Calendar and Run")
-            btn.click(fn=getOutfit, inputs=[btn, gender_selector], outputs=outputs)
+            btn = gr.Button("Suggest an Outfit")
+
+        with gr.Row():
+            outputs=gr.Textbox(lines=5, label="Generated Outfit")
+
+        btn.click(fn=getOutfit, inputs=[events_textbox, gender_selector], outputs=outputs)
 
         with gr.Row():
             with gr.Accordion(label="Additional Notes", open=False):
                 gr.Markdown(
                     """
-                    <h4 style="text-align:center"> <i><u> Please do not spam the button as errors will arise. </br> Additionally, errors may occasionally occur even when all user input is correct. If you believe this to be the case, please refresh the page and try using the demo again. </u></i> </h4>
+                    <h4 style="text-align:center"> <i><u> This is a "lite" version without integration to Google Calendar. </u></i> </h4>
                     """
                 )
-    
+
     with gr.Tab("Upload Clothing Items"):
         gr.Markdown(
             """
@@ -119,4 +123,35 @@ with gr.Blocks() as demo:
             fn=classifyClothing,
             cache_examples=True,
         )
+
+    with gr.Tab("[Not Working Live] Get Outfit(s) Based on Your Google Calendar"):
+        with gr.Row():
+            gr.Markdown(
+                """
+                <h1> <center> IntelliStyle </center> </h1>
+                <h3> <center> 
+                IntelliStyle is integrated with your Google Calendar, allowing it to suggest optimized outfits for your upcoming day. 
+                </br>
+                It also takes into account weather conditions, making sure you're looking your best — rain or shine. 
+                </center> </h3>
+                """
+            )
+
+        with gr.Row():
+            outputs=gr.Textbox(lines=5, label="Generated Outfit")
+            
+        with gr.Row():
+            gender_selector = gr.Radio(["Male", "Female", "Non-binary"], label="Gender Identity", info="If gender identity is not provided, results may be less fine-tuned.")
+
+        with gr.Row():
+            btn = gr.Button("Connect to Google Calendar and Run", interactive=False)
+            btn.click(fn=getOutfit, inputs=[btn, gender_selector], outputs=outputs)
+
+        with gr.Row():
+            with gr.Accordion(label="Additional Notes", open=False):
+                gr.Markdown(
+                    """
+                    <h4 style="text-align:center"> <i><u> Unfortunately, I can't figure out how to integrate Google Calendar API into gradio, so this tab is currently non-functioning. </u></i> </h4>
+                    """
+                )
 demo.launch()
