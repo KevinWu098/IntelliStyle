@@ -69,11 +69,12 @@ with gr.Blocks() as demo:
             btn.click(fn=getOutfit, inputs=[btn, gender_selector], outputs=outputs)
 
         with gr.Row():
-            gr.Markdown(
-                """
-                <h4 style="text-align:center"> <i><u> Please do not spam the button as errors will occur if you use it too rapidly. </u></i> </h4>
-                """
-        )
+            with gr.Accordion(label="Additional Notes", open=False):
+                gr.Markdown(
+                    """
+                    <h4 style="text-align:center"> <i><u> Please do not spam the button as errors will arise. </br> Additionally, errors may occasionally occur even when all user input is correct. If you believe this to be the case, please refresh the page and try using the demo again. </u></i> </h4>
+                    """
+                )
     
     with gr.Tab("Upload Clothing Items"):
         gr.Markdown(
@@ -99,6 +100,14 @@ with gr.Blocks() as demo:
         btn.click(fn=classifyClothing, inputs=inp, outputs=[out, display_clothing_list])
 
         with gr.Row():
+            with gr.Accordion(label="Additional Notes", open=False):
+                gr.Markdown(
+                    """
+                    <h4 style="text-align:center"> <i><u> Please do not spam the button as errors will arise. </br> Additionally, errors may occasionally occur even when all user input is correct. If you believe this to be the case, please refresh the page and try using the demo again. </u></i> </h4>
+                    """
+                )
+                
+        with gr.Row():
             gr.Markdown("""<h1><center>Demo Example ↓</center><h1>""")
         
         import os
@@ -111,4 +120,4 @@ with gr.Blocks() as demo:
             fn=classifyClothing,
             cache_examples=True,
         )
-demo.launch(share=True)
+demo.launch()
