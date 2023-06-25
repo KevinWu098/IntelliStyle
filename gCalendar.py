@@ -2,13 +2,14 @@ import datetime
 from google_auth_oauthlib.flow import InstalledAppFlow
 from googleapiclient.discovery import build
 from pytz import timezone
+import config
 
 def getCalendarEvents():
     # Define the scopes required for calendar access
     SCOPES = ['https://www.googleapis.com/auth/calendar']
 
     # Set up OAuth 2.0 credentials
-    flow = InstalledAppFlow.from_client_secrets_file('client_secret.json', SCOPES)
+    flow = InstalledAppFlow.from_client_config(config.client_secret_json, SCOPES)
     credentials = flow.run_local_server()
 
     # Create a service client
