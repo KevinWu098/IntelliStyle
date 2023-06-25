@@ -1,4 +1,4 @@
-import gCalendar, weather, chatAI
+import gCalendar, chatAI
 import gradio as gr
 import requests
 import config
@@ -7,11 +7,7 @@ API_KEY = config.HF_API_KEY
 API_URL = "https://api-inference.huggingface.co/models/microsoft/resnet-50"
 headers = {"Authorization": f"Bearer {API_KEY}"}
 
-# Test events
-# event_summaries = ["Dinner Date"]
-# event_summaries = ', '.join(event_summaries)
-
-clothing_list = []
+clothing_list = [] # Utilized in chatAI.py for more personalized suggestions
 
 def getOutfit(dummy_argument):
     event_summaries = gCalendar.getCalendarEvents()
@@ -38,7 +34,7 @@ def classifyClothing(filepath):
         return response.json()
 
     output = query(filepath)
-
+    print(output)
     if output:
         clothing_list.append(f"[{output[0]['label']}]")
         print(clothing_list)
@@ -64,13 +60,12 @@ with gr.Blocks() as demo:
             outputs=gr.Textbox(lines=5, label="Generated Outfit")
         
         with gr.Row():
-            btn = gr.Button("Run")
+            btn = gr.Button("Connect to Google Calendar and Run")
             btn.click(fn=getOutfit, inputs=btn, outputs=outputs)
 
         with gr.Row():
             gr.Markdown(
                 """
-                </br>
                 <h4 style="text-align:center"> <i><u> Please do not spam the button as errors will occur if you use it too rapidly. </u></i> </h4>
                 """
         )

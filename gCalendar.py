@@ -42,9 +42,5 @@ def getCalendarEvents():
     else:
         print('Events for', date.date())
         for event in events:
-            # event_start = datetime.datetime.strptime(str(event['start']['dateTime']), '%Y-%m-%dT%H:%M:%S%z').time()
-            # event_end = datetime.datetime.strptime(str(event['end']['dateTime']), '%Y-%m-%dT%H:%M:%S%z').time()
-            event_summary = event['summary']
-
-            event_summaries.append(event_summary)
+            event_summaries.append(event['summary'])
         return event_summaries

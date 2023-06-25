@@ -2,8 +2,7 @@ import requests
 import datetime
 
 def getWeather():
-
-# Get the current date
+    # Get the current date
     current_date = datetime.date.today().isoformat()
 
     # Replace the start_date and end_date in the URL
@@ -21,5 +20,5 @@ def getWeather():
     humidity_avg = sum(relative_humidity_2m_selected) / len(relative_humidity_2m_selected)
     rain_avg = sum(rain_selected) / len(rain_selected)
 
-    weather_forecast_8_20 = f'Average Temperature: 120 Farenheit, Average Relative Humidity (2m): {humidity_avg} Percent, Average Rain: {rain_avg} Inch'
+    weather_forecast_8_20 = f'Average Temperature: {temperature_avg}, Average Relative Humidity (2m): {humidity_avg} Percent, Average Rain: {rain_avg} Inch'
     return weather_forecast_8_20
