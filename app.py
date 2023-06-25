@@ -1,10 +1,18 @@
 import gCalendar, weather, chatAI
+import gradio as gr
+import requests
+import config
+
+API_KEY = config.HF_API_KEY
+API_URL = "https://api-inference.huggingface.co/models/microsoft/resnet-50"
+headers = {"Authorization": f"Bearer {API_KEY}"}
 
 # Test events
 # event_summaries = ["Dinner Date"]
 # event_summaries = ', '.join(event_summaries)
 
-import gradio as gr
+
+clothing_list = []
 
 def getOutfit(dummy_argument):
     event_summaries = gCalendar.getCalendarEvents()
@@ -23,11 +31,6 @@ def getOutfit(dummy_argument):
         f'{generated_outfit}'
     )
 
-import requests
-API_KEY = "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"
-API_URL = "https://api-inference.huggingface.co/models/microsoft/resnet-50"
-headers = {"Authorization": f"Bearer {API_KEY}"}
-
 def classifyClothing(filepath):
     def query(filename):
         with open(filename, "rb") as f:
@@ -37,7 +40,12 @@ def classifyClothing(filepath):
 
     output = query(filepath)
 
-    return output[0]["label"] if output else None
+    if output:
+        clothing_list.append(f"[{output[0]['label']}]")
+        print(clothing_list)
+        return [output[0]["label"], ", ".join(clothing_list)]
+    else:
+        return ["Nothing detected", ", ".join(clothing_list)]
 
 with gr.Blocks() as demo:
     with gr.Tab("Get Outfit(s) Based on Your Schedule"):
@@ -85,10 +93,14 @@ with gr.Blocks() as demo:
             out = gr.Textbox(label="What article of clothing we think you uploaded")
 
         btn = gr.Button("Run")
-        btn.click(fn=classifyClothing, inputs=inp, outputs=out)
 
         with gr.Row():
-            gr.Markdown("""<h1><center>Examples ↓</center><h1>""")
+            display_clothing_list = gr.Textbox(label="Uploaded Clothes:")
+
+        btn.click(fn=classifyClothing, inputs=inp, outputs=[out, display_clothing_list])
+
+        with gr.Row():
+            gr.Markdown("""<h1><center>Demo Example ↓</center><h1>""")
         
         import os
         gr.Examples(
