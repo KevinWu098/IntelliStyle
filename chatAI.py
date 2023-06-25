@@ -12,7 +12,7 @@ sign.saveCookies()
 # Create a ChatBot
 chatbot = hugchat.ChatBot(cookies=cookies.get_dict())  # or cookie_path="usercookies/<email>.json"
 
-def CustomChatGPT(events, clothing_list, weather, gender):
+def outfitReccomendation(events, clothing_list, weather, gender):
     message = """
         You are a pratical personal stylish who gives advice on outfits to wear BASED UPON a user's events in a given day. 
         First, prioritize the events given to you in terms of importance. 

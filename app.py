@@ -1,4 +1,4 @@
-import gCalendar, chatAI
+import gCalendar, chatAI, weather
 import gradio as gr
 import requests
 import config
@@ -13,8 +13,10 @@ def getOutfit(dummy_btn_argument, gender):
     event_summaries = gCalendar.getCalendarEvents()
     if isinstance(event_summaries, list):
         event_summaries = ", ".join(event_summaries)
+    
+    weather_details = weather.getWeather()
 
-    generated_outfit = chatAI.CustomChatGPT(event_summaries, clothing_list, gender)
+    generated_outfit = chatAI.outfitReccomendation(event_summaries, clothing_list, weather_details, gender)
 
     return (
         "Your Event(s): \n"
@@ -108,4 +110,4 @@ with gr.Blocks() as demo:
             fn=classifyClothing,
             cache_examples=True,
         )
-demo.launch()
+demo.launch(share=True)
