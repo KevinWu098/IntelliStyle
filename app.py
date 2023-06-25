@@ -16,7 +16,7 @@ def getOutfit(dummy_btn_argument, gender):
     
     weather_details = weather.getWeather()
 
-    generated_outfit = chatAI.outfitReccomendation(event_summaries, ", ".join(clothing_list), weather_details, gender)
+    generated_outfit = chatAI.outfitRecommendation(event_summaries, ", ".join(clothing_list), weather_details, gender)
 
     return (
         "Your Event(s): \n"
