@@ -124,7 +124,7 @@ with gr.Blocks() as demo:
             cache_examples=True,
         )
 
-    with gr.Tab("[Not Working Live] Get Outfit(s) Based on Your Google Calendar"):
+    with gr.Tab("[Not Live] Get Outfit(s) Based on Your Google Calendar"):
         with gr.Row():
             gr.Markdown(
                 """

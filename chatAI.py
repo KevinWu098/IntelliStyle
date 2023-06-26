@@ -32,7 +32,6 @@ def outfitRecommendation(events, clothing_list, weather, gender):
         **defaults,
         prompt=message
     )
-    print(response.result)
     return(response.result)
 
 # from hugchat import hugchat
