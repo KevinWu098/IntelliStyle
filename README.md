@@ -5,6 +5,12 @@ A personal stylist that utilizes your Google Calendar events, upcoming weather, 
 <p align="center">
   <img width=300 src="https://github.com/KevinWu098/IntelliStyle/assets/100006999/6d59c957-1ac6-45d2-a969-d45f314fff18" alt="...maybe this wasn't built for programmers"
 </p>
+  
+## Built With
+- Python and the Gradio library
+- Leverages generative AI models: PaLM (Google Bard), ChatGPT (OpenAI), and Microsoft's Resnet 50
+- Integrates with Google Calendar using Google Cloud Platform and the Google Calendar API
+- Contextualizes suggestions with weather information from Open-Meteo's Weather API
 
 ## Introduction
 Inspired by [this wonderful Youtube video](https://www.youtube.com/watch?v=RlzWluuBhVQ&ab_channel=AdilKhadri), IntelliStyle is a "lite" demo that aims to explore how a personal stylist might be implemented and function through the use of AI tools such as Google's Bard (text-to-text generation) and Microsoft's Resnet50 (image-to-text generation)
